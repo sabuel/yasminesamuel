@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nosso Tempo Juntos</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom right, #ffe6e6, #ffecec);
+      color: #333;
+    }
+
+    header {
+      background: #ff4d6d;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    .carousel-wrapper {
+      position: relative;
+      max-width: 100%;
+      overflow: hidden;
+    }
+
+    .carousel-container {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      width: 100%;
+    }
+
+    .carousel-container img {
+      width: 100vw;
+      height: auto;
+      object-fit: cover;
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 30px;
+      background-color: rgba(255, 77, 109, 0.7);
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      z-index: 10;
+      border-radius: 50%;
+    }
+
+    .arrow:hover {
+      background-color: rgba(255, 77, 109, 1);
+    }
+
+    .arrow.left {
+      left: 10px;
+    }
+
+    .arrow.right {
+      right: 10px;
+    }
+
+    .music-player {
+      background: #ff4d6d;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .music-player h2 {
+      margin-bottom: 10px;
+    }
+
+    .music-player button {
+      background: #fff0f5;
+      border: none;
+      color: #ff4d6d;
+      font-size: 18px;
+      padding: 10px 15px;
+      margin: 5px;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+
+    .music-player button:hover {
+      background: #ffe3eb;
+    }
+
+    .timer {
+      background: white;
+      margin: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .timer p {
+      margin: 8px 0;
+    }
+
+    .timer span {
+      font-weight: bold;
+      color: #ff4d6d;
+    }
+
+    @media (max-width: 768px) {
+      .carousel-container img {
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>❤️ Nosso Tempo Juntos ❤️</h1>
+  </header>
+
+  <!-- Carrossel de Imagens -->
+  <div class="carousel-wrapper">
+    <button class="arrow left" onclick="prevImage()">❮</button>
+    <div class="carousel-container" id="carousel">
+      <img src="https://via.placeholder.com/600x400?text=Foto+1" alt="Foto 1" />
+      <img src="https://via.placeholder.com/600x400?text=Foto+2" alt="Foto 2" />
+      <img src="https://via.placeholder.com/600x400?text=Foto+3" alt="Foto 3" />
+      <img src="https://via.placeholder.com/600x400?text=Foto+4" alt="Foto 4" />
+    </div>
+    <button class="arrow right" onclick="nextImage()">❯</button>
+  </div>
+
+  <!-- Tocador de Música -->
+  <div class="music-player">
+    <h2>🎶 Músicas que Marcam Nossa História 🎶</h2>
+    <audio id="audioPlayer" controls>
+      <source src="your-audio.mp3" type="audio/mp3" />
+      Seu navegador não suporta áudio.
+    </audio>
+    <div>
+      <button onclick="prevTrack()">⏮ Anterior</button>
+      <button onclick="togglePlayPause()">⏯ Play/Pause</button>
+      <button onclick="nextTrack()">Próxima ⏭</button>
+    </div>
+  </div>
+
+  <!-- Timer -->
+  <div class="timer">
+    <p>Esse é o tempo que nós estamos juntos. Eu te amo, meu amor, do começo até o infinito. 💖</p>
+    <p><span id="timer">Carregando...</span></p>
+  </div>
+
+  <script>
+    // TIMER
+    const startDate = new Date('2018-05-05T16:43:00');
+    function updateTimer() {
+      const now = new Date();
+      const diff = now - startDate;
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+      document.getElementById('timer').textContent =
+        `${days} dias, ${hours} horas, ${minutes} minutos e ${seconds} segundos`;
+    }
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    // MUSIC PLAYER
+    const audioPlayer = document.getElementById('audioPlayer');
+    const tracks = [
+      'your-audio1.mp3',
+      'your-audio2.mp3',
+      'your-audio3.mp3'
+    ];
+    let currentTrack = 0;
+    function togglePlayPause() {
+      if (audioPlayer.paused) audioPlayer.play();
+      else audioPlayer.pause();
+    }
+    function nextTrack() {
+      currentTrack = (currentTrack + 1) % tracks.length;
+      audioPlayer.src = tracks[currentTrack];
+      audioPlayer.play();
+    }
+    function prevTrack() {
+      currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+      audioPlayer.src = tracks[currentTrack];
+      audioPlayer.play();
+    }
+
+    // CARROSSEL
+    const carousel = document.getElementById('carousel');
+    let currentIndex = 0;
+
+    function updateCarousel() {
+      carousel.style.transform = `translateX(-${currentIndex * 100}vw)`;
+    }
+
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % carousel.children.length;
+      updateCarousel();
+    }
+
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + carousel.children.length) % carousel.children.length;
+      updateCarousel();
+    }
+  </script>
+
+</body>
+</html>
