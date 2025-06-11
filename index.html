@@ -34,14 +34,16 @@
     .carousel-container {
       display: flex;
       transition: transform 0.5s ease-in-out;
-      width: 100%;
+      width: fit-content;
     }
 
     .carousel-container img {
-      width: 100vw;
+      width: 720px;
       height: auto;
       object-fit: cover;
+      flex-shrink: 0;
     }
+
 
     .arrow {
       position: absolute;
@@ -160,7 +162,7 @@
 
   <!-- Timer -->
   <div class="timer">
-    <p>Esse é o tempo que nós estamos juntos. Eu te amo, meu xuxu, mil milhões. 💖</p>
+    <p>Esse é o tempo que nós estamos juntos, salvo alguns contratempos. Eu te amo, meu xuxu, mil milhões. 💖</p>
     <p><span id="timer">Carregando...</span></p>
   </div>
 
