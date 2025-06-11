@@ -182,27 +182,38 @@
     updateTimer();
 
     // MUSIC PLAYER
-    const audioPlayer = document.getElementById('audioPlayer');
-    const tracks = [
-      'your-audio1.mp3',
-      'your-audio2.mp3',
-      'your-audio3.mp3'
-    ];
-    let currentTrack = 0;
-    function togglePlayPause() {
-      if (audioPlayer.paused) audioPlayer.play();
-      else audioPlayer.pause();
-    }
-    function nextTrack() {
-      currentTrack = (currentTrack + 1) % tracks.length;
-      audioPlayer.src = tracks[currentTrack];
-      audioPlayer.play();
-    }
-    function prevTrack() {
-      currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
-      audioPlayer.src = tracks[currentTrack];
-      audioPlayer.play();
-    }
+<script>
+  // MUSIC PLAYER
+  const audioPlayer = document.getElementById('audioPlayer');
+  const tracks = [
+    'musicas/Stephen Sanchez & Em Beihold - Until I Found You (Tradução⧸Legendado) (Live The Late Late Show).mp3',
+    'musicas/Dark Paradise.mp3',
+    'musicas/Lana Del Rey - Fuck it I love you.mp3',
+    'musicas/Suki Waterhouse - To Love (Spanish & Portuguese Lyric Video).mp3'
+  ];
+  let currentTrack = 0;
+
+  // Carrega a primeira música ao iniciar
+  audioPlayer.src = tracks[currentTrack];
+
+  function togglePlayPause() {
+    if (audioPlayer.paused) audioPlayer.play();
+    else audioPlayer.pause();
+  }
+
+  function nextTrack() {
+    currentTrack = (currentTrack + 1) % tracks.length;
+    audioPlayer.src = tracks[currentTrack];
+    audioPlayer.load(); // Garante que o navegador recarregue a nova música
+    audioPlayer.play();
+  }
+
+  function prevTrack() {
+    currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+    audioPlayer.src = tracks[currentTrack];
+    audioPlayer.load();
+    audioPlayer.play();
+  }
 
     // CARROSSEL
     const carousel = document.getElementById('carousel');
