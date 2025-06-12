@@ -181,19 +181,41 @@
 
   <script>
     // TIMER
-    const startDate = new Date('2018-05-05T16:43:00');
-    function updateTimer() {
-      const now = new Date();
-      const diff = now - startDate;
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-      document.getElementById('timer').textContent =
-        `${days} dias, ${hours} horas, ${minutes} minutos e ${seconds} segundos`;
-    }
-    setInterval(updateTimer, 1000);
-    updateTimer();
+const startDate = new Date('2018-05-05T16:43:00');
+// Intervalo em que não estavam juntos
+const breakupStart = new Date('2022-12-01T00:00:00');
+const breakupEnd = new Date('2024-04-01T00:00:00');
+
+function updateTimer() {
+  const now = new Date();
+
+  // Tempo total juntos até hoje
+  let diff;
+
+  if (now < breakupStart) {
+    // Antes do término, conta normalmente
+    diff = now - startDate;
+  } else if (now >= breakupStart && now < breakupEnd) {
+    // Durante o término, conta só até o término
+    diff = breakupStart - startDate;
+  } else {
+    // Depois da reconciliação
+    const timeBeforeBreak = breakupStart - startDate;
+    const timeAfterBreak = now - breakupEnd;
+    diff = timeBeforeBreak + timeAfterBreak;
+  }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  document.getElementById('timer').textContent =
+    `${days} dias, ${hours} horas, ${minutes} minutos e ${seconds} segundos`;
+}
+
+setInterval(updateTimer, 1000);
+updateTimer();
 
     // MUSIC PLAYER
 
