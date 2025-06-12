@@ -189,29 +189,58 @@ const breakupEnd = new Date('2024-04-01T00:00:00');
 function updateTimer() {
   const now = new Date();
 
-  // Tempo total juntos até hoje
-  let diff;
+  // Tempo separados
+  const breakupStart = new Date('2022-12-01T00:00:00');
+  const breakupEnd = new Date('2024-04-01T00:00:00');
+  const breakupDuration = breakupEnd - breakupStart;
+
+  // Tempo total juntos até agora
+  let totalTimeTogether;
 
   if (now < breakupStart) {
-    // Antes do término, conta normalmente
-    diff = now - startDate;
+    totalTimeTogether = now - startDate;
   } else if (now >= breakupStart && now < breakupEnd) {
-    // Durante o término, conta só até o término
-    diff = breakupStart - startDate;
+    totalTimeTogether = breakupStart - startDate;
   } else {
-    // Depois da reconciliação
-    const timeBeforeBreak = breakupStart - startDate;
-    const timeAfterBreak = now - breakupEnd;
-    diff = timeBeforeBreak + timeAfterBreak;
+    totalTimeTogether = (now - startDate) - breakupDuration;
   }
 
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
-  const seconds = Math.floor((diff / 1000) % 60);
+  // Cria nova data a partir do início e soma o tempo válido
+  const adjustedDate = new Date(startDate.getTime() + totalTimeTogether);
+
+  // Agora calcula a diferença detalhada
+  let years = adjustedDate.getFullYear() - startDate.getFullYear();
+  let months = adjustedDate.getMonth() - startDate.getMonth();
+  let days = adjustedDate.getDate() - startDate.getDate();
+  let hours = adjustedDate.getHours() - startDate.getHours();
+  let minutes = adjustedDate.getMinutes() - startDate.getMinutes();
+  let seconds = adjustedDate.getSeconds() - startDate.getSeconds();
+
+  if (seconds < 0) {
+    seconds += 60;
+    minutes--;
+  }
+  if (minutes < 0) {
+    minutes += 60;
+    hours--;
+  }
+  if (hours < 0) {
+    hours += 24;
+    days--;
+  }
+  if (days < 0) {
+    const prevMonth = new Date(adjustedDate.getFullYear(), adjustedDate.getMonth(), 0);
+    days += prevMonth.getDate();
+    months--;
+  }
+  if (months < 0) {
+    months += 12;
+    years--;
+  }
 
   document.getElementById('timer').textContent =
-    `${days} dias, ${hours} horas, ${minutes} minutos e ${seconds} segundos`;
+    `${years} anos, ${months} meses, ${days} dias, ` +
+    `${hours} horas, ${minutes} minutos e ${seconds} segundos`;
 }
 
 setInterval(updateTimer, 1000);
